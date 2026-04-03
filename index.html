@@ -323,8 +323,8 @@ void main() {
         <li><b>Konsep:</b> Objek dari subclass dapat diperlakukan sebagai objek dari superclass</li>
         <li><b>Parameterized Constructor:</b> ClassName(this.param)</li>
         <li><b>Contoh:</b> Semua Kucing , Anjing , Burung adalah Hewan</li>
-        <li><b> i.Compile-time polymorphism: Method overloading (tidak didukung Dart)
-                ii. Runtime polymorphism: Method overriding (didukung Dart)</li>
+        <li><b> i.Compile-time polymorphism: Method overloading (tidak didukung Dart)</li>
+        <li><b>ii. Runtime polymorphism: Method overriding (didukung Dart)</li>
       </ol>
       <pre>
         // Nama: Azriel Miracle Yuandre
@@ -377,7 +377,7 @@ bentuk2.gambar();  // Output: Menggambar persegi
     <div class="card">
       <p>
        <ul><li>
-         is : Mengecek tipe objek
+        is : Mengecek tipe objek
         as : Casting tipe objek
        </li></ul>
       </p>
@@ -385,20 +385,24 @@ bentuk2.gambar();  // Output: Menggambar persegi
       <pre>
 // Nama   : Azriel Miracle Yuandre
 // Nim    : 251410024
-// Kelas  : Si2A
-class Kendaraan {}
-class Mobil extends Kendaraan {
-void klakson() => print('Tin!');
-}
-void main() {
-Kendaraan k = Mobil();
-if (k is Mobil) {          
-// Cek tipe
-(k as Mobil).klakson();  // Casting
-}
-// Safe casting dengan as?
-(k as Mobil?)?.klakson();
+// Kelas  : SI2A
 
+class Kendaraan {}
+
+class Mobil extends Kendaraan {
+  void klakson() => print('Tin!');
+}
+
+void main() {
+  Kendaraan k = Mobil();
+  
+  if (k is Mobil) {
+    (k as Mobil).klakson();  // Output: Tin!
+  }
+  
+  (k as Mobil).klakson();  // Output: Tin!
+  
+  (k as Mobil?)?.klakson();  // Output: Tin!
 }
 
   </pre>
@@ -459,7 +463,7 @@ void main() {
     <h2> Pengantar Abstraksi</h2>
     <div class="card">
 <pre>
-  Konsep: Menyembunyikan detail implementasi, hanya menunjukkan
+Konsep: Menyembunyikan detail implementasi, hanya menunjukkan
 fungsionalitas
 Tujuan:
 i. Fokus pada "apa" bukan "bagaimana"
@@ -525,8 +529,8 @@ void main() {
     <div class="card">
       <p>
        <pre>
-         Method tanpa body (implementasi)
-        Harus di-override di subclass
+  Method tanpa body (implementasi)
+  Harus di-override di subclass
        </pre>
       </p>
 
@@ -567,21 +571,21 @@ void main() {
     <div class="card">
       <p>
         <pre>
-          Fakta: sejak Dart 3.0 dart punya keyword 
-          interface
-          Cara: Semua interface class adalah implicit interface
-          Gunakan 
-          implements untuk mengimplementasi interface
+  Fakta: sejak Dart 3.0 dart punya keyword 
+  interface
+  Cara: Semua interface class adalah implicit interface
+  Gunakan 
+  implements untuk mengimplementasi interface
         </pre>
       </p>
 
       <pre>
 // Nama   : Azriel Miracle Yuandre
 // Nim    : 251410024
-// Kelas  : Si2A
+// Kelas  : SI2A
 
-interface class Flyable {
-  void terbang();  // Tidak boleh memiliki body
+abstract interface class Flyable {
+  void terbang(); 
 }
 
 class Bird implements Flyable {
@@ -598,8 +602,8 @@ void main() {
   Bird burung = Bird();
   Plane pesawat = Plane();
   
-  burung.terbang();
-  pesawat.terbang();
+  burung.terbang();   // Output: Burung terbang tinggi
+  pesawat.terbang();  // Output: Pesawat terbang cepat
 }
   </pre>
 
@@ -820,6 +824,7 @@ void main() {
 
     <h2>Latihan</h2>
     <div class="card">
+      <h2>Jawaban Soal 1,2,3</h2>
       <pre>
 // Nama   : Azriel Miracle Yuandre
 // Nim    : 251410024
@@ -926,8 +931,9 @@ void main() {
         Lihat Kode
       </button>
 
+<h2>Jawaban Soal 4</h2>
 <pre>
-  // Nama   : Azriel Miracle Yuandre
+// Nama   : Azriel Miracle Yuandre
 // Nim    : 251410024
 // Kelas  : Si2A
   // Soal 4
@@ -1070,7 +1076,7 @@ void main() {
       <button class="btn" onclick="openModal('17dc112fbbf09455faf5544e1c8e62d6')">
         Lihat Kode
       </button>
-
+<h2>Jawaban Soal 5</h2>
       <pre>
         
 // Nama   : Azriel Miracle Yuandre
@@ -1162,7 +1168,7 @@ void main() {
       <pre>
 // Nama   : Azriel Miracle Yuandre
 // Nim    : 251410024
-// Kelas  : Si2A
+// Kelas  : SI2A
 
 // ==================== ABSTRACT CLASS ====================
 abstract class MediaPlayer {
@@ -1185,24 +1191,15 @@ abstract class MediaPlayer {
 }
 
 // ==================== INTERFACES ====================
-interface class Playable {
-  void play() {
-    print('Memutar media...');
-  }
-  
-  void resume() {
-    print('Melanjutkan pemutaran...');
-  }
+// PERBAIKAN: interface class tidak bisa memiliki method dengan body (harus abstract)
+abstract interface class Playable {
+  void play();
+  void resume();
 }
 
-interface class Pausable {
-  void pause() {
-    print('Menjeda pemutaran...');
-  }
-  
-  void resumeFromPause() {
-    print('Melanjutkan dari jeda...');
-  }
+abstract interface class Pausable {
+  void pause();
+  void resumeFromPause();
 }
 
 // ==================== CLASS IMPLEMENTASI ====================
@@ -1507,12 +1504,14 @@ void main() {
       <h2>Kesimpulan</h2>
       <pre>
 <p>
+  <pre>
 1. Polimorfisme: Objek child dapat diperlakukan sebagai parent
 2. Abstract class: Template dengan method abstract/concrete
 3. Interface: Kontrak yang harus diimplementasi
 4. multiple inheritance: mewarisi fungsi dari dua atau lebih hierarki class yang
-berbed</p>
+berbeda
      </pre>
+        </p>
     </footer>
 
   </div>
