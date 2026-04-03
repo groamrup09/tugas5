@@ -397,12 +397,12 @@ void main() {
   Kendaraan k = Mobil();
   
   if (k is Mobil) {
-    (k as Mobil).klakson();  // Output: Tin!
+    k.klakson();
   }
   
-  (k as Mobil).klakson();  // Output: Tin!
+  (k as Mobil).klakson();
   
-  (k as Mobil?)?.klakson();  // Output: Tin!
+  (k as Mobil?)?.klakson();
 }
 
   </pre>
