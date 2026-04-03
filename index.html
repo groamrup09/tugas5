@@ -1128,59 +1128,6 @@ void main() {
       </button>
     </div>
 
-    <h2>Studi Kasus Sistem Login</h2>
-    <div class="card">
-      <pre>
-// Nama   : Azriel Miracle Yuandre
-// Nim    : 251410024
-// Kelas  : Si2A
-
-class User {
-  String _username;
-  String _password;
-
-  User(this._username, this._password);
-  
-  String get username => _username;
-
-  bool login(String username, String password) {
-    return _username == username && _password == password;
-  }
-
-  void gantiPassword(String lama, String baru) {
-    if (_password == lama) {
-      if (baru.length >= 8) {
-        _password = baru;
-        print('Password Anda berhasil diubah.');
-      } else {
-        print('Gagal: Password baru minimal 8 karakter.');
-      }
-    } else {
-      print('Gagal: Password lama tidak cocok.');
-    }
-  }
-}
-
-void main() {
-  print('--- MEMBUAT AKUN BARU ---');
-  final User u1 = User('super_Miracle', 'rahasia123');
-  
-  print('--- PROSES VERIFIKASI LOGIN ---');
-  if (u1.login('super_Miracle', 'rahasia123')) {
-    print('Selamat datang! Anda berhasil masuk.');
-  }
-
-  print('\n--- PERUBAHAN KATA SANDI ---');
-  u1.gantiPassword('rahasia123', 'superSecret789');
-  u1.gantiPassword('salahPass', 'cobaCoba'); // Percobaan gagal
-}
-  </pre>
-
-      <button class="btn" onclick="openModal('dcf4b00cade35460b7a7dbcea44561b3')">
-        Lihat Kode
-      </button>
-    </div>
-
     <h2>Challange</h2>
     <div class="card">
       <pre>
