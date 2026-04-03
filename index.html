@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Polimorfisme dan Abstraksi</title>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #f1f5f9, #dbeafe);
+      line-height: 1.6;
+      color: #1e293b;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      margin-top: 40px;
+      border-left: 5px solid #2563eb;
+      padding-left: 10px;
+    }
+
+    p {
+      margin-bottom: 15px;
+    }
+
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transition: 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+      border-radius: 10px;
+      margin-top: 15px;
+    }
+
+    hr {
+      margin: 50px 0;
+      border: none;
+      height: 1px;
+      background: #cbd5e1;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid #cbd5e1;
+      font-size: 14px;
+      text-align: center;
+      color: #475569;
+    }
+
+    /* BUTTON */
+    .btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 18px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #1e40af;
+    }
+
+    /* MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-content {
+      position: relative;
+      background: white;
+      width: 90%;
+      max-width: 900px;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 12px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal iframe {
+      width: 100%;
+      height: 500px;
+      border: none;
+      border-radius: 10px;
+    }
+
+    .close {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 22px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .close:hover {
+      color: #2563eb;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    pre {
+      background: #f8fafc;
+      padding: 15px;
+      border-radius: 8px;
+      overflow-x: auto;
+      border: 1px solid #e2e8f0;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    /* Tabel Perbedaan extends vs implements */
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 14px 20px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.comparison-table th {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.comparison-table tr:last-child td {
+    border-bottom: none;
+}
+
+.comparison-table td:first-child,
+.comparison-table th:first-child {
+    font-weight: 600;
+    background-color: rgba(102, 126, 234, 0.15);
+}
+
+.comparison-table td {
+    color: #e0e0e0;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.badge-is-a {
+    background: rgba(52, 211, 153, 0.2);
+    color: #6ee7b7;
+    border: 1px solid #34d399;
+}
+
+.badge-can-do {
+    background: rgba(251, 146, 60, 0.2);
+    color: #fdba74;
+    border: 1px solid #f97316;
+}
+
+.check {
+    color: #34d399;
+    font-size: 1.1rem;
+}
+
+.cross {
+    color: #f87171;
+    font-size: 1.1rem;
+}
+
+.hint {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    display: block;
+    margin-top: 4px;
+}
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h1>Review Sesi 4</h1>
+    <p><b>Nama:</b> Azriel Miracle Yuandre</p>
+    <p><b>NIM:</b> 251410024</p>
+    <p><b>Kelas:</b> SI2A</p>
+
+    <div class="card">
+      <ul>
+        <li> Review Sesi 3 – Pewarisan
+            Inheritance: 
+            extends keyword
+            super() untuk panggil constructor parent
+            @override untuk override method</li>
+      </ul>
+
+      <pre>
+// Nama: Azriel Miracle Yuandre
+// Nim: 251410024
+// Kelas: SI2A
+
+class Hewan {
+  void bersuara() => print('...');
+}
+
+class Kucing extends Hewan {
+  @override
+  void bersuara() => print('Meong');
+}
+
+void main() {
+  Hewan hewan = Hewan();
+  Kucing kucing = Kucing();
+  
+  hewan.bersuara(); // Output: ...
+  kucing.bersuara(); // Output: Meong
+}
+  </pre>
+
+      <button class="btn" onclick="openModal('41cc1cbe833a270f3ba3667dedb6377a')">
+        Lihat Kode
+      </button>
+    </div>
+
+    <div class="card">
+      <h3>Pengantar Polimorfisme</h3>
+      <p>Dart menyediakan beberapa mekanisme inisialisasi objek untuk berbagai kebutuhan arsitektur:</p>
+      <ol>
+        <li><b>Arti:</b>  "Banyak bentuk" (poly = banyak, morph = bentuk)</li>
+        <li><b>Konsep:</b> Objek dari subclass dapat diperlakukan sebagai objek dari superclass</li>
+        <li><b>Parameterized Constructor:</b> ClassName(this.param)</li>
+        <li><b>Contoh:</b> Semua Kucing , Anjing , Burung adalah Hewan</li>
+        <li><b> i.Compile-time polymorphism: Method overloading (tidak didukung Dart)
+                ii. Runtime polymorphism: Method overriding (didukung Dart)</li>
+      </ol>
+      <pre>
+        // Nama: Azriel Miracle Yuandre
+        // Nim: 251410024
+        // Kelas: SI2A
+
+
+        class Bentuk {
+        void gambar() => print('Menggambar bentuk');
+        }
+        class Lingkaran extends Bentuk {
+        @override
+void gambar() => print('Menggambar lingkaran');
+}
+class Persegi extends Bentuk {
+@override
+void gambar() => print('Menggambar persegi');
+}
+void main() {
+Bentuk bentuk1 = Lingkaran();  // Polimorfisme
+Bentuk bentuk2 = Persegi();    
+// Polimorfisme
+bentuk1.gambar();  // Output: Menggambar lingkaran
+bentuk2.gambar();  // Output: Menggambar persegi
+
+}
+
+      </pre>
+       <button class="btn" onclick="openModal('64d31adb0bd4421a5b48a7b84766dfda')">
+        Lihat Kode
+      </button>
+    </div>
+
+<h2>  Manfaat Polimorfisme</h2>
+    <div class="card">
+      <ul>
+      <li>
+         1. Fleksibilitas: Kode dapat bekerja dengan berbagai tipe
+        2. Extensibility: Mudah menambah tipe baru
+        3. Code Reusability: Method umum di superclass
+        4. Maintainability: Perubahan mudah dikelola
+      </li> </ul>
+    </div>
+
+
+
+    
+
+    <h2>2.is dan as Operator</h2>
+    <div class="card">
+      <p>
+       <ul><li>
+         is : Mengecek tipe objek
+        as : Casting tipe objek
+       </li></ul>
+      </p>
+
+      <pre>
+// Nama   : Azriel Miracle Yuandre
+// Nim    : 251410024
+// Kelas  : Si2A
+class Kendaraan {}
+class Mobil extends Kendaraan {
+void klakson() => print('Tin!');
+}
+void main() {
+Kendaraan k = Mobil();
+if (k is Mobil) {          
+// Cek tipe
+(k as Mobil).klakson();  // Casting
+}
+// Safe casting dengan as?
+(k as Mobil?)?.klakson();
+
+}
+
+  </pre>
+
+      <button class="btn" onclick="openModal('15c6cee8fbb2e9bf2de27f7faaa2d444')">
+        Lihat Kode
+      </button>
+    </div>
+
+    <h2> Praktik 1 – Polimorfisme dengan List</h2>
+    <div class="card">
+    <pre>
+// Nama   : Azriel Miracle Yuandre
+// Nim    : 251410024
+// Kelas  : Si2A
+      class Hewan {
+  void bersuara() => print('...');
+}
+
+class Kucing extends Hewan {
+  @override
+  void bersuara() => print('Meong');
+}
+
+class Anjing extends Hewan {
+  @override
+  void bersuara() => print('Guk Guk');
+}
+
+class Burung extends Hewan {
+  @override
+  void bersuara() => print('Cit Cit');
+}
+
+void main() {
+  // Membuat list dengan berbagai objek subclass
+  List<Hewan> daftarHewan = [
+    Kucing(),
+    Anjing(),
+    Burung(),
+    Kucing(),
+    Anjing(),
+  ];
+  
+  // Loop list dan panggil method bersuara()
+  print('Suara-suara hewan:');
+  for (var hewan in daftarHewan) {
+    hewan.bersuara();
+  }
+}
+    </pre>
+  <button class="btn" onclick="openModal('87958f06e6ead274cc976e3913dda31d')">
+        Lihat Kode
+      </button>
+      
+    </div>
+
+    <h2> Pengantar Abstraksi</h2>
+    <div class="card">
+<pre>
+  Konsep: Menyembunyikan detail implementasi, hanya menunjukkan
+fungsionalitas
+Tujuan:
+i. Fokus pada "apa" bukan "bagaimana"
+ii. Kontrak yang harus dipenuhi
+iii. Fleksibilitas implementas
+</pre>
+ </div>
+
+    <h2>3.  Abstract Class</h2>
+    <div class="card">
+      <p>
+       Tidak bisa diinstansiasi langsung
+        Dapat memiliki method abstract (tanpa implementasi) dan concrete (dengan
+        implementasi)
+      </p>
+
+      <pre>
+// Nama   : Azriel Miracle Yuandre
+// Nim    : 251410024
+// Kelas  : Si2A
+
+abstract class Kendaraan {
+  String? merk;  // Field concrete
+  
+  void start();  // Method abstract
+  
+  void stop() {  // Method concrete
+    print('Kendaraan berhenti');
+  }
+}
+
+class Mobil extends Kendaraan {
+  @override
+  void start() {
+    print('Mobil ${merk ?? 'tanpa merk'} menyala');
+  }
+  
+  // Optional: override method stop jika ingin perilaku berbeda
+  @override
+  void stop() {
+    print('Mobil ${merk ?? 'tanpa merk'} berhenti');
+  }
+}
+
+void main() {
+  Mobil mobil1 = Mobil();
+  mobil1.merk = 'Toyota';
+  mobil1.start();  // Output: Mobil Toyota menyala
+  mobil1.stop();   // Output: Mobil Toyota berhenti
+  
+  Mobil mobil2 = Mobil();
+  mobil2.start();  // Output: Mobil tanpa merk menyala
+  mobil2.stop();   // Output: Mobil tanpa merk berhenti
+}
+  </pre>
+
+      <button class="btn" onclick="openModal('ee643f115bd1e132a1774de9f6fe1ceb')">
+        Lihat Kode
+      </button>
+    </div>
+
+    <h2>4.Abstract Method</h2>
+    <div class="card">
+      <p>
+       <pre>
+         Method tanpa body (implementasi)
+        Harus di-override di subclass
+       </pre>
+      </p>
+
+      <pre>
+// Nama   : Azriel Miracle Yuandre
+// Nim    : 251410024
+// Kelas  : Si2A
+
+abstract class AlatMusik {
+  void mainkan();  // Abstract method
+  
+  void info() {    // Concrete method
+    print('Ini adalah alat musik');
+  }
+}
+
+class Gitar extends AlatMusik {
+  @override
+  void mainkan() {
+    print('Jreng jreng...');
+  }
+}
+
+void main() {
+  Gitar gitar = Gitar();
+  
+  gitar.mainkan();  // Output: Jreng jreng...
+  gitar.info();     // Output: Ini adalah alat musik
+}
+  </pre>
+
+      <button class="btn" onclick="openModal('70ae74d84992152c2f879540fb3d00c6')">
+        Lihat Kode
+      </button>
+    </div>
+
+    <h2>5. Interface di Dart</h2>
+    <div class="card">
+      <p>
+        <pre>
+          Fakta: sejak Dart 3.0 dart punya keyword 
+          interface
+          Cara: Semua interface class adalah implicit interface
+          Gunakan 
+          implements untuk mengimplementasi interface
+        </pre>
+      </p>
+
+      <pre>
+// Nama   : Azriel Miracle Yuandre
+// Nim    : 251410024
+// Kelas  : Si2A
+
+interface class Flyable {
+  void terbang();  // Tidak boleh memiliki body
+}
+
+class Bird implements Flyable {
+  @override
+  void terbang() => print('Burung terbang tinggi');
+}
+
+class Plane implements Flyable {
+  @override
+  void terbang() => print('Pesawat terbang cepat');
+}
+
+void main() {
+  Bird burung = Bird();
+  Plane pesawat = Plane();
+  
+  burung.terbang();
+  pesawat.terbang();
+}
+  </pre>
+
+      <button class="btn" onclick="openModal('85559010d8033d30c41a40e85eb3a936')">
+        Lihat Kode
+      </button>
+    </div>
+
+    <h2>Perbedaan extends vs implements</h2>
+<div class="card">
+    <table class="comparison-table">
+    <thead>
+        <tr>
+            <th>Aspect</th>
+            <th>extends</th>
+            <th>implements</th>
+        </tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+            <td>Hubungan</td>
+            <td><span class="badge badge-is-a">"is-a"</span> (adalah)</td>
+            <td><span class="badge badge-can-do">"can-do"</span> (bisa melakukan)</td>
+        </tr>
+        
+       
+        <tr>
+            <td>Inheritance</td>
+            <td>Mewarisi implementasi <span class="check">✓</span></td>
+            <td>Hanya kontrak <span class="cross">✗</span></td>
+        </tr>
+        
+      
+        <tr>
+            <td>Method</td>
+            <td>Bisa concrete/abstract</td>
+            <td>Semua harus di-implement <span class="cross">✗</span></td>
+         </tr>
+        
+      
+        <tr>
+            <td>Single/Multiple</td>
+            <td>Ya (single inheritance) <span class="check">✓</span></td>
+            <td>Banyak (multiple) <span class="check">✓</span></td>
+         </tr>
+      
+        <tr>
+            <td>Keyword</td>
+            <td><code style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:6px;">extends</code></td>
+            <td><code style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:6px;">implements</code></td>
+         </tr>
+
+        <tr>
+            <td>Contoh</td>
+            <td>
+                <code>class Mobil extends Kendaraan</code>
+                <span class="hint">Mobil IS-A Kendaraan</span>
+            </td>
+            <td>
+                <code>class Bird implements Flyable</code>
+                <span class="hint">Bird CAN-DO Flyable</span>
+            </td>
+         </tr>
+    </tbody>
+</table>
+</div>
+    
+    <h2>Static Members dan Method</h2>
+    <div class="card">
+      <ul>
+        <li>
+          Static members adalah properti atau method yang dimiliki oleh class itu
+          sendiri, bukan oleh objek class. Static member diakses langsung melalui
+          class name.
+          Properti dan method static sangat berguna untuk membuat utility class
+          atau menyimpan konstanta yang terkait dengan class, sehingga dapat diakses
+          langsung tanpa perlu membuat objek.
+        </li>
+      </ul>
+
+      <pre>
+// Nama   : Azriel Miracle Yuandre
+// Nim    : 251410024
+// Kelas  : Si2A 
+
+class MathUtils {
+static double pi = 3.14;
+static int add(int x, int y) {
+return x + y;
+}
+}
+void main() {
+print('Nilai pi : ${MathUtils.pi}');
+print('Result : ${MathUtils.add(10, 20)}');
+}
+  </pre>
+
+      <button class="btn" onclick="openModal('dec0523715d12ecda4212a847fbfd51f')">
+        Lihat Kode
+      </button>
+    </div>
+
+    <h2>Praktik 2- sistem pembayaran</h2>
+    <div class="card">
+      <pre>
+// Nama   : Azriel Miracle Yuandre
+// Nim    : 251410024
+// Kelas  : Si2A 
+
+abstract class MetodePembayaran {
+  void bayar(double jumlah);
+}
+
+class KartuKredit implements MetodePembayaran {
+  @override
+  void bayar(double jumlah) {
+    print('Bayar $jumlah dengan Kartu Kredit');
+  }
+}
+
+class EWallet implements MetodePembayaran {
+  @override
+  void bayar(double jumlah) {
+    print('Bayar $jumlah dengan E-Wallet');
+  }
+}
+
+class Tunai implements MetodePembayaran {
+  @override
+  void bayar(double jumlah) {
+    print('Bayar $jumlah dengan Tunai');
+  }
+}
+
+// Contoh penggunaan
+void main() {
+  List<MetodePembayaran> listPembayaran = [
+    KartuKredit(),
+    EWallet(),
+    Tunai(),
+  ];
+  
+  for (var metode in listPembayaran) {
+    metode.bayar(100000);
+  }
+}
+  </pre>
+
+      <button class="btn" onclick="openModal('a9d07d8a56d386459b17222dacbf6235')">
+        Lihat Kode
+      </button>
+    </div>
+
+    <h2> Studi Kasus: Sistem Bentuk Geometri</h2>
+    <div class="card">
+      <pre>
+// Nama   : Azriel Miracle Yuandre
+// Nim    : 251410024
+// Kelas  : Si2A
+
+abstract class Bentuk {
+  double hitungLuas();
+  double hitungKeliling();
+  
+  void info() {
+    print('Luas: ${hitungLuas()}, Keliling: ${hitungKeliling()}');
+  }
+}
+
+class Persegi implements Bentuk {
+  double sisi;
+  
+  Persegi(this.sisi);
+  
+  @override
+  double hitungLuas() => sisi * sisi;
+  
+  @override
+  double hitungKeliling() => 4 * sisi;
+  
+  @override
+  void info() {
+    print('Persegi dengan sisi $sisi memiliki luas ${hitungLuas()} dan keliling ${hitungKeliling()}');
+  }
+}
+
+class Lingkaran implements Bentuk {
+  double radius;
+  
+  Lingkaran(this.radius);
+  
+  @override
+  double hitungLuas() => 3.14 * radius * radius;
+  
+  @override
+  double hitungKeliling() => 2 * 3.14 * radius;
+  
+  @override
+  void info() {
+    print('Lingkaran dengan radius $radius memiliki luas ${hitungLuas()} dan keliling ${hitungKeliling()}');
+  }
+}
+
+void main() {
+  Persegi persegi = Persegi(5);
+  Lingkaran lingkaran = Lingkaran(7);
+  
+  persegi.info();
+  lingkaran.info();
+}
+  </pre>
+
+      <button class="btn" onclick="openModal('224b5f420bce43a752cf2a412fb7bd85')">
+        Lihat Kode
+      </button>
+    </div>
+
+    <h2>Latihan</h2>
+    <div class="card">
+      <pre>
+// Nama   : Azriel Miracle Yuandre
+// Nim    : 251410024
+// Kelas  : Si2A
+
+// Soal 1, 2, 3
+abstract class Pekerja {
+  void bekerja();
+  
+  void istirahat() {
+    print('Sedang istirahat...');
+  }
+  
+  void info() {
+    print('Ini adalah seorang pekerja');
+  }
+}
+
+class Programmer implements Pekerja {
+  String nama;
+  String bahasaPemrograman;
+  
+  Programmer(this.nama, this.bahasaPemrograman);
+  
+  @override
+  void bekerja() {
+    print('$nama sedang coding dengan $bahasaPemrograman');
+  }
+  
+  @override
+  void istirahat() {
+    print('$nama minum kopi sambil ngoding');
+  }
+  
+  @override
+  void info() {
+    print('$nama adalah seorang Programmer');
+  }
+}
+
+class Dokter implements Pekerja {
+  String nama;
+  String spesialis;
+  
+  Dokter(this.nama, this.spesialis);
+  
+  @override
+  void bekerja() {
+    print('$nama sedang memeriksa pasien $spesialis');
+  }
+  
+  @override
+  void istirahat() {
+    print('$nama istirahat di ruang dokter');
+  }
+  
+  @override
+  void info() {
+    print('$nama adalah seorang Dokter $spesialis');
+  }
+}
+
+class Guru implements Pekerja {
+  String nama;
+  String mataPelajaran;
+  
+  Guru(this.nama, this.mataPelajaran);
+  
+  @override
+  void bekerja() {
+    print('$nama sedang mengajar $mataPelajaran');
+  }
+  
+  @override
+  void istirahat() {
+    print('$nama istirahat di ruang guru');
+  }
+  
+  @override
+  void info() {
+    print('$nama adalah seorang Guru $mataPelajaran');
+  }
+}
+
+void main() {
+  print('========== SOAL 1,2,3 ==========');
+  
+  List<Pekerja> daftarPekerja = [
+    Programmer('Andi', 'Dart'),
+    Dokter('Budi', 'Jantung'),
+    Guru('Citra', 'Matematika'),
+  ];
+  
+  for (var pekerja in daftarPekerja) {
+    pekerja.info();
+    pekerja.bekerja();
+    pekerja.istirahat();
+    print('---');
+  }
+}
+  </pre>
+
+      <button class="btn" onclick="openModal('fa58abad32d57301a931ce6e012c6296')">
+        Lihat Kode
+      </button>
+
+<pre>
+  // Nama   : Azriel Miracle Yuandre
+// Nim    : 251410024
+// Kelas  : Si2A
+  // Soal 4
+class Komputer {
+  String merk;
+  String processor;
+  int ram;
+  
+  Komputer(this.merk, this.processor, this.ram);
+  
+  void menyalakan() {
+    print('Komputer $merk menyala');
+  }
+  
+  void mematikan() {
+    print('Komputer $merk mati');
+  }
+  
+  void menjalankanProgram(String program) {
+    print('Menjalankan $program di komputer $merk');
+  }
+}
+
+class Kamera {
+  int megapixel;
+  String lensa;
+  
+  Kamera(this.megapixel, this.lensa);
+  
+  void mengambilFoto() {
+    print('Mengambil foto dengan kamera $megapixel MP');
+  }
+  
+  void merekamVideo() {
+    print('Merekam video dengan lensa $lensa');
+  }
+}
+
+class Telepon {
+  String nomor;
+  String provider;
+  
+  Telepon(this.nomor, this.provider);
+  
+  void menelepon(String tujuan) {
+    print('Menelepon $tujuan dari nomor $nomor');
+  }
+  
+  void mengirimPesan(String tujuan, String pesan) {
+    print('Mengirim pesan ke $tujuan: $pesan');
+  }
+}
+
+class Tablet implements Komputer, Kamera, Telepon {
+  String nama;
+  String merk;
+  String processor;
+  int ram;
+  int megapixel;
+  String lensa;
+  String nomor;
+  String provider;
+  
+  Tablet({
+    required this.nama,
+    required this.merk,
+    required this.processor,
+    required this.ram,
+    required this.megapixel,
+    required this.lensa,
+    required this.nomor,
+    required this.provider,
+  });
+  
+  @override
+  void menyalakan() {
+    print('Tablet $nama ($merk) menyala');
+  }
+  
+  @override
+  void mematikan() {
+    print('Tablet $nama ($merk) mati');
+  }
+  
+  @override
+  void menjalankanProgram(String program) {
+    print('Menjalankan $program di tablet $nama');
+  }
+  
+  @override
+  void mengambilFoto() {
+    print('Tablet $nama mengambil foto dengan kamera $megapixel MP');
+  }
+  
+  @override
+  void merekamVideo() {
+    print('Tablet $nama merekam video dengan lensa $lensa');
+  }
+  
+  @override
+  void menelepon(String tujuan) {
+    print('Tablet $nama menelepon $tujuan dari nomor $nomor ($provider)');
+  }
+  
+  @override
+  void mengirimPesan(String tujuan, String pesan) {
+    print('Tablet $nama mengirim pesan ke $tujuan: $pesan');
+  }
+  
+  void sentuhLayar() {
+    print('Menyentuh layar tablet $nama');
+  }
+}
+
+void main() {
+  print('========== SOAL 4 ==========');
+  
+  Tablet tablet = Tablet(
+    nama: 'iPad Pro',
+    merk: 'Apple',
+    processor: 'M2',
+    ram: 16,
+    megapixel: 12,
+    lensa: 'Wide',
+    nomor: '08123456789',
+    provider: 'Telkomsel',
+  );
+  
+  tablet.menyalakan();
+  tablet.menjalankanProgram('Photoshop');
+  tablet.mengambilFoto();
+  tablet.merekamVideo();
+  tablet.menelepon('08123456788');
+  tablet.mengirimPesan('08123456788', 'Halo dari tablet!');
+  tablet.sentuhLayar();
+  tablet.mematikan();
+}
+</pre>
+
+      <button class="btn" onclick="openModal('17dc112fbbf09455faf5544e1c8e62d6')">
+        Lihat Kode
+      </button>
+
+      <pre>
+        
+// Nama   : Azriel Miracle Yuandre
+// Nim    : 251410024
+// Kelas  : Si2A
+        // Soal 5
+class MathUtils {
+  static int factorial(int n) {
+    if (n < 0) throw ArgumentError('Tidak bisa menghitung faktorial bilangan negatif');
+    if (n == 0 || n == 1) return 1;
+    int hasil = 1;
+    for (int i = 2; i <= n; i++) {
+      hasil *= i;
+    }
+    return hasil;
+  }
+  
+  static bool isPrima(int n) {
+    if (n <= 1) return false;
+    if (n == 2) return true;
+    if (n % 2 == 0) return false;
+    for (int i = 3; i * i <= n; i += 2) {
+      if (n % i == 0) return false;
+    }
+    return true;
+  }
+  
+  static double roundToDecimal(double value, int decimalPlaces) {
+    double faktor = 1;
+    for (int i = 0; i < decimalPlaces; i++) {
+      faktor *= 10;
+    }
+    return (value * faktor).round() / faktor;
+  }
+  
+  static int randomInt(int min, int max) {
+    return min + (DateTime.now().millisecondsSinceEpoch % (max - min + 1));
+  }
+  
+  static double randomDouble(double min, double max) {
+    return min + (DateTime.now().millisecondsSinceEpoch % 10000) / 10000 * (max - min);
+  }
+  
+  static double rataRata(List<double> angka) {
+    if (angka.isEmpty) return 0;
+    double sum = 0;
+    for (var a in angka) {
+      sum += a;
+    }
+    return sum / angka.length;
+  }
+  
+  static double median(List<double> angka) {
+    if (angka.isEmpty) return 0;
+    List<double> sorted = List.from(angka)..sort();
+    int tengah = sorted.length ~/ 2;
+    if (sorted.length % 2 == 0) {
+      return (sorted[tengah - 1] + sorted[tengah]) / 2;
+    } else {
+      return sorted[tengah];
+    }
+  }
+}
+
+void main() {
+  print('========== SOAL 5 ==========');
+  
+  print('Factorial 5: ${MathUtils.factorial(5)}');
+  print('Factorial 7: ${MathUtils.factorial(7)}');
+  print('Apakah 17 prima? ${MathUtils.isPrima(17)}');
+  print('Apakah 20 prima? ${MathUtils.isPrima(20)}');
+  print('3.14159 ke 2 desimal: ${MathUtils.roundToDecimal(3.14159, 2)}');
+  print('Random Int (1-10): ${MathUtils.randomInt(1, 10)}');
+  print('Random Double (0-1): ${MathUtils.randomDouble(0, 1)}');
+  
+  List<double> nilai = [70, 85, 90, 75, 80, 95];
+  print('List nilai: $nilai');
+  print('Rata-rata: ${MathUtils.rataRata(nilai)}');
+  print('Median: ${MathUtils.median(nilai)}');
+}
+      </pre>
+      <button class="btn" onclick="openModal('ad1d8ca83dd226040f10697bf0ccecb7')">
+        Lihat Kode
+      </button>
+    </div>
+
+    <h2>Studi Kasus Sistem Login</h2>
+    <div class="card">
+      <pre>
+// Nama   : Azriel Miracle Yuandre
+// Nim    : 251410024
+// Kelas  : Si2A
+
+class User {
+  String _username;
+  String _password;
+
+  User(this._username, this._password);
+  
+  String get username => _username;
+
+  bool login(String username, String password) {
+    return _username == username && _password == password;
+  }
+
+  void gantiPassword(String lama, String baru) {
+    if (_password == lama) {
+      if (baru.length >= 8) {
+        _password = baru;
+        print('Password Anda berhasil diubah.');
+      } else {
+        print('Gagal: Password baru minimal 8 karakter.');
+      }
+    } else {
+      print('Gagal: Password lama tidak cocok.');
+    }
+  }
+}
+
+void main() {
+  print('--- MEMBUAT AKUN BARU ---');
+  final User u1 = User('super_Miracle', 'rahasia123');
+  
+  print('--- PROSES VERIFIKASI LOGIN ---');
+  if (u1.login('super_Miracle', 'rahasia123')) {
+    print('Selamat datang! Anda berhasil masuk.');
+  }
+
+  print('\n--- PERUBAHAN KATA SANDI ---');
+  u1.gantiPassword('rahasia123', 'superSecret789');
+  u1.gantiPassword('salahPass', 'cobaCoba'); // Percobaan gagal
+}
+  </pre>
+
+      <button class="btn" onclick="openModal('dcf4b00cade35460b7a7dbcea44561b3')">
+        Lihat Kode
+      </button>
+    </div>
+
+    <h2>Challange</h2>
+    <div class="card">
+      <pre>
+// Nama   : Azriel Miracle Yuandre
+// Nim    : 251410024
+// Kelas  : Si2A
+
+// ==================== ABSTRACT CLASS ====================
+abstract class MediaPlayer {
+  String title;
+  int duration; // dalam detik
+  
+  MediaPlayer(this.title, this.duration);
+  
+  // Abstract methods
+  void play();
+  void stop();
+  void showInfo();
+  
+  // Concrete method
+  void displayDuration() {
+    int menit = duration ~/ 60;
+    int detik = duration % 60;
+    print('Durasi: ${menit.toString().padLeft(2, '0')}:${detik.toString().padLeft(2, '0')}');
+  }
+}
+
+// ==================== INTERFACES ====================
+interface class Playable {
+  void play() {
+    print('Memutar media...');
+  }
+  
+  void resume() {
+    print('Melanjutkan pemutaran...');
+  }
+}
+
+interface class Pausable {
+  void pause() {
+    print('Menjeda pemutaran...');
+  }
+  
+  void resumeFromPause() {
+    print('Melanjutkan dari jeda...');
+  }
+}
+
+// ==================== CLASS IMPLEMENTASI ====================
+class AudioPlayer implements MediaPlayer, Playable, Pausable {
+  @override
+  String title;
+  
+  @override
+  int duration;
+  
+  String formatAudio;
+  int bitrate;
+  bool isPlaying = false;
+  bool isPaused = false;
+  
+  AudioPlayer({
+    required this.title,
+    required this.duration,
+    required this.formatAudio,
+    required this.bitrate,
+  });
+  
+  @override
+  void play() {
+    if (isPaused) {
+      resume();
+    } else {
+      isPlaying = true;
+      isPaused = false;
+      print('🎵 Memutar audio: $title ($formatAudio, ${bitrate}kbps)');
+    }
+  }
+  
+  @override
+  void resume() {
+    if (isPaused) {
+      isPlaying = true;
+      isPaused = false;
+      print('🎵 Melanjutkan audio: $title');
+    }
+  }
+  
+  @override
+  void stop() {
+    isPlaying = false;
+    isPaused = false;
+    print('⏹️ Menghentikan audio: $title');
+  }
+  
+  @override
+  void pause() {
+    if (isPlaying) {
+      isPlaying = false;
+      isPaused = true;
+      print('⏸️ Menjeda audio: $title');
+    }
+  }
+  
+  @override
+  void resumeFromPause() {
+    if (isPaused) {
+      isPlaying = true;
+      isPaused = false;
+      print('▶️ Melanjutkan audio dari jeda: $title');
+    }
+  }
+  
+  @override
+  void showInfo() {
+    print('═══════════════════════════════');
+    print('📻 AUDIO PLAYER');
+    print('═══════════════════════════════');
+    print('Judul: $title');
+    print('Format: $formatAudio');
+    print('Bitrate: ${bitrate}kbps');
+    displayDuration();
+    print('Status: ${isPlaying ? "Playing" : (isPaused ? "Paused" : "Stopped")}');
+    print('═══════════════════════════════');
+  }
+  
+  void setVolume(int volume) {
+    print('🔊 Mengatur volume ke $volume%');
+  }
+  
+  void setEqualizer(String mode) {
+    print('🎚️ Mengatur equalizer ke mode: $mode');
+  }
+}
+
+class VideoPlayer implements MediaPlayer, Playable, Pausable {
+  @override
+  String title;
+  
+  @override
+  int duration;
+  
+  String resolusi;
+  String formatVideo;
+  bool isPlaying = false;
+  bool isPaused = false;
+  int currentTime = 0;
+  
+  VideoPlayer({
+    required this.title,
+    required this.duration,
+    required this.resolusi,
+    required this.formatVideo,
+  });
+  
+  @override
+  void play() {
+    if (isPaused) {
+      resume();
+    } else {
+      isPlaying = true;
+      isPaused = false;
+      print('🎬 Memutar video: $title ($resolusi, $formatVideo)');
+    }
+  }
+  
+  @override
+  void resume() {
+    if (isPaused) {
+      isPlaying = true;
+      isPaused = false;
+      print('🎬 Melanjutkan video: $title');
+    }
+  }
+  
+  @override
+  void stop() {
+    isPlaying = false;
+    isPaused = false;
+    currentTime = 0;
+    print('⏹️ Menghentikan video: $title');
+  }
+  
+  @override
+  void pause() {
+    if (isPlaying) {
+      isPlaying = false;
+      isPaused = true;
+      print('⏸️ Menjeda video: $title');
+    }
+  }
+  
+  @override
+  void resumeFromPause() {
+    if (isPaused) {
+      isPlaying = true;
+      isPaused = false;
+      print('▶️ Melanjutkan video dari jeda: $title');
+    }
+  }
+  
+  @override
+  void showInfo() {
+    print('═══════════════════════════════');
+    print('📺 VIDEO PLAYER');
+    print('═══════════════════════════════');
+    print('Judul: $title');
+    print('Resolusi: $resolusi');
+    print('Format: $formatVideo');
+    displayDuration();
+    print('Status: ${isPlaying ? "Playing" : (isPaused ? "Paused" : "Stopped")}');
+    print('═══════════════════════════════');
+  }
+  
+  void setQuality(String quality) {
+    print('📺 Mengubah kualitas video ke: $quality');
+  }
+  
+  void seekTo(int seconds) {
+    if (seconds >= 0 && seconds <= duration) {
+      currentTime = seconds;
+      int menit = seconds ~/ 60;
+      int detik = seconds % 60;
+      print('⏩ Lompat ke ${menit.toString().padLeft(2, '0')}:${detik.toString().padLeft(2, '0')}');
+    } else {
+      print('❌ Waktu tidak valid!');
+    }
+  }
+  
+  void fullscreen() {
+    print('🖥️ Mode layar penuh aktif');
+  }
+}
+
+// ==================== MAIN PROGRAM ====================
+void main() {
+  print('═══════════════════════════════════════════════════════');
+  print('        MEDIA PLAYER SYSTEM DEMONSTRATION');
+  print('═══════════════════════════════════════════════════════\n');
+  
+  // Membuat object AudioPlayer
+  AudioPlayer audio = AudioPlayer(
+    title: 'Imagine - John Lennon',
+    duration: 183,
+    formatAudio: 'MP3',
+    bitrate: 320,
+  );
+  
+  // Membuat object VideoPlayer
+  VideoPlayer video = VideoPlayer(
+    title: 'Inception Final Scene',
+    duration: 420,
+    resolusi: '1920x1080',
+    formatVideo: 'MP4',
+  );
+  
+  // Demonstrasi AudioPlayer
+  print('══════════════ AUDIO PLAYER DEMO ══════════════\n');
+  audio.showInfo();
+  print('');
+  audio.play();
+  audio.pause();
+  audio.resumeFromPause();
+  audio.setVolume(75);
+  audio.setEqualizer('Rock');
+  audio.stop();
+  print('');
+  
+  // Demonstrasi VideoPlayer
+  print('══════════════ VIDEO PLAYER DEMO ══════════════\n');
+  video.showInfo();
+  print('');
+  video.play();
+  video.pause();
+  video.resumeFromPause();
+  video.seekTo(120);
+  video.setQuality('4K');
+  video.fullscreen();
+  video.stop();
+  print('');
+  
+  // Demonstrasi POLIMORFISME dengan List
+  print('══════════ POLIMORFISME DEMO ══════════════════\n');
+  
+  List<MediaPlayer> daftarMedia = [
+    AudioPlayer(
+      title: 'Bohemian Rhapsody',
+      duration: 355,
+      formatAudio: 'FLAC',
+      bitrate: 1411,
+    ),
+    VideoPlayer(
+      title: 'Interstellar Trailer',
+      duration: 180,
+      resolusi: '3840x2160',
+      formatVideo: 'MKV',
+    ),
+    AudioPlayer(
+      title: 'Shape of You',
+      duration: 228,
+      formatAudio: 'AAC',
+      bitrate: 256,
+    ),
+  ];
+  
+  for (var media in daftarMedia) {
+    print('Memutar: ${media.title}');
+    media.displayDuration();
+    print('---');
+  }
+  
+  // Demonstrasi Interface Playable
+  print('\n══════════ INTERFACE DEMO ══════════════════════\n');
+  
+  List<Playable> playableList = [audio, video];
+  
+  for (var item in playableList) {
+    print('Memulai pemutaran...');
+    item.play();
+    print('');
+  }
+  
+  // Demonstrasi Interface Pausable
+  print('══════════ PAUSABLE DEMO ══════════════════════\n');
+  
+  List<Pausable> pausableList = [audio, video];
+  
+  for (var item in pausableList) {
+    print('Menjeda pemutaran...');
+    item.pause();
+    print('Melanjutkan...');
+    item.resumeFromPause();
+    print('');
+  }
+  
+  print('═══════════════════════════════════════════════════════');
+  print('                    DEMO SELESAI');
+  print('═══════════════════════════════════════════════════════');
+}
+  </pre>
+
+      <button class="btn" onclick="openModal('98a848219e926cf5c8c48f362e81d5bb')">
+        Lihat Kode
+      </button>
+    </div>
+
+    <footer>
+      <h2>Kesimpulan</h2>
+      <pre>
+<p>
+1. Polimorfisme: Objek child dapat diperlakukan sebagai parent
+2. Abstract class: Template dengan method abstract/concrete
+3. Interface: Kontrak yang harus diimplementasi
+4. multiple inheritance: mewarisi fungsi dari dua atau lebih hierarki class yang
+berbed</p>
+     </pre>
+    </footer>
+
+  </div>
+
+  <!-- MODAL DINAMIS (Cukup Satu Saja) -->
+  <div id="dynamicModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <iframe id="modalIframe" src=""></iframe>
+    </div>
+  </div>
+
+  <script>
+    function openModal(gistId) {
+      const modal = document.getElementById("dynamicModal");
+      const iframe = document.getElementById("modalIframe");
+
+      // Load link secara otomatis saat diklik
+      iframe.src = `https://dartpad.dev/embed-dart.html?id=${gistId}&null_safety=true&run=true&theme=light`;
+      modal.style.display = "block";
+      document.body.style.overflow = "hidden"; // Biar ga bisa scroll saat modal buka
+    }
+
+    function closeModal() {
+      const modal = document.getElementById("dynamicModal");
+      const iframe = document.getElementById("modalIframe");
+
+      modal.style.display = "none";
+      iframe.src = ""; // Bersihkan iframe biar ga berat
+      document.body.style.overflow = "auto";
+    }
+
+    // Klik di luar modal untuk tutup
+    window.onclick = function (event) {
+      const modal = document.getElementById("dynamicModal");
+      if (event.target == modal) closeModal();
+    }
+  </script>
+
+</body>
+
+</html>
